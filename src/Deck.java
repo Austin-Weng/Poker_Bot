@@ -1,9 +1,8 @@
-package org.example;
 import java.util.*;
 
 
 public class Deck {
-    private final Stack<org.example.Card> cards;
+    private final Stack<Card> cards;
 
     public Deck() {
         this.cards = new Stack<>();
@@ -17,7 +16,7 @@ public class Deck {
 
         for (String suit : suits) {
             for (String rank : ranks) {
-                cards.push(new org.example.Card(suit, rank));
+                cards.push(new Card(suit, rank));
             }
         }
     }
@@ -26,7 +25,7 @@ public class Deck {
         Collections.shuffle(cards);
     }
 
-    public org.example.Card deal() {
+    public Card deal() {
         return cards.pop();
     }
 
