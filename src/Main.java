@@ -13,19 +13,26 @@ public class Main {
         Player player = new Player(300);
         String[] orderOfPlay = {"austin", "harry", "human player"};
 
-        //Deal cards
+        //Deal cards to all players
         austinBot.addCard(deck.deal());
         austinBot.addCard(deck.deal());
         harryBot.addCard(deck.deal());
         harryBot.addCard(deck.deal());
         player.addCard(deck.deal());
         player.addCard(deck.deal());
+
+        //Reveal the flop
         burnPile.add(deck.deal());
         cardsInPlay.add(deck.deal());
         cardsInPlay.add(deck.deal());
         cardsInPlay.add(deck.deal());
         System.out.println("Game initialized");
         System.out.println("Your Cards: " + player.getHand());
-        System.out.println("Flop: " + cardsInPlay);
+        System.out.println("Cards in play: " + cardsInPlay);
+        System.out.println(austinBot.decision(cardsInPlay, pot));
+        System.out.println(harryBot.decision(cardsInPlay, pot));
+        System.out.println("What would you like to do? (fold/check/call/raise)");
+
+        //ROUND 1
     }
 }

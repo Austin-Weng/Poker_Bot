@@ -6,7 +6,7 @@ public class HarryBot extends Player {
     public HarryBot(int money) {
         this.setMoney(money);
     }
-    public String decision(LinkedList<Card> cardsInPlay, int pot){
+    public String decision(HashSet<Card> cardsInPlay, int pot){
         return "";
     }
 

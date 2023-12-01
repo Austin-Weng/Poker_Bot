@@ -8,7 +8,7 @@ public class AustinBot extends Player{
         this.setMoney(money);
     }
 
-    public String decision(LinkedList<Card> cardsInPlay, int pot){
-        return "";
+    public String decision(HashSet<Card> cardsInPlay, int pot){
+        return "ALL IN";
     }
 }
