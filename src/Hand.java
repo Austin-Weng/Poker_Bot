@@ -87,7 +87,7 @@ public class Hand {
         return true;
     }
     private boolean isStraight(HashSet<Card> cards) {
-        // Straight: Five consecutive cards of any suit
+
         List<Card> sortedCards = new ArrayList<>(cards);
         sortedCards.sort(Comparator.comparingInt(this::cardValue));
 
@@ -114,7 +114,7 @@ public class Hand {
                 pairCount++;
             }
         }
-        return pairCount == 4; // Two pairs mean four cards with rank 2.
+        return pairCount == 4;
     }
 
     private boolean isOnePair(HashSet<Card> cards) {
