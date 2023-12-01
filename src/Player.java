@@ -3,6 +3,7 @@ public class Player {
     private HashSet<Card> hand;
     private int money = 0;
     public Player(int money) {this.money = money;}
+    public Player(){};
 
     public int getMoney(){
         return money;
