@@ -16,8 +16,8 @@ public class Main {
         //Deal cards
         austinBot.addCard(deck.deal());
         austinBot.addCard(deck.deal());
-        harryBot.hand.add(deck.deal());
-        harryBot.hand.add(deck.deal());
+        harryBot.addCard(deck.deal());
+        harryBot.addCard(deck.deal());
         player.addCard(deck.deal());
         player.addCard(deck.deal());
         System.out.println("Game initialized");
