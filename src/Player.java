@@ -1,6 +1,6 @@
 import java.util.*;
 public class Player {
-    private HashSet<Card> hand;
+    private final HashSet<Card> hand = new HashSet<>();
     private int money = 0;
     public Player(int money) {this.money = money;}
     public Player(){};
