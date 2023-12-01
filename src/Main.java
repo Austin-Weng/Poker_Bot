@@ -3,8 +3,8 @@ public class Main {
     public static void main(String[] args) {
         AustinBot austinBot = new AustinBot(300);
         HarryBot harryBot = new HarryBot(300);
-        LinkedList<Card> cardsInPlay = new LinkedList<Card>();
-        LinkedList<Card> burnPile = new LinkedList<Card>();
+        HashSet<Card> cardsInPlay = new HashSet<Card>();
+        HashSet<Card> burnPile = new HashSet<Card>();
         int pot = 0;
         Deck deck = new Deck();
         deck.initializeDeck();
@@ -20,7 +20,12 @@ public class Main {
         harryBot.addCard(deck.deal());
         player.addCard(deck.deal());
         player.addCard(deck.deal());
+        burnPile.add(deck.deal());
+        cardsInPlay.add(deck.deal());
+        cardsInPlay.add(deck.deal());
+        cardsInPlay.add(deck.deal());
         System.out.println("Game initialized");
         System.out.println("Your Cards: " + player.getHand());
+        System.out.println("Flop: " + cardsInPlay);
     }
 }
