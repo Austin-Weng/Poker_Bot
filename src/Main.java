@@ -9,16 +9,14 @@ public class Main {
         Deck deck = new Deck();
         deck.initializeDeck();
         deck.shuffle();
-        String[] orderOfPlay = {"bot 1", "bot 2", "human player"};
-        dealCards(deck, austinBot.hand, harryBot.hand, playerHand);
-    }
+        String[] orderOfPlay = {"austin", "harry", "human player"};
 
-    public void dealCards(Stack deck, HashSet<Card> bot1Hand, HashSet<Card> bot2Hand, HashSet<Card> playerHand){
-        bot1Hand.add(deck.deal);
-        bot1Hand.add(deck.deal);
-        bot2Hand.add(deck.deal);
-        bot2Hand.add(deck.deal);
-        playerHand.add(deck.deal);
-        playerHand.add(deck.deal);
+        //Deal cards
+        austinBot.hand.add(deck.deal);
+        austinBot.hand.add(deck.deal);
+        harryBot.hand.add(deck.deal);
+        harryBot.hand.add(deck.deal);
+        player.addCard(deck.deal);
+        player.addCard(deck.deal);
     }
 }
