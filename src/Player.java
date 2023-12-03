@@ -15,6 +15,22 @@ public class Player {
     public HashSet<Card> getHand(){return hand;}
 
     public void addCard(Card card){this.hand.add(card);}
+    public String decision(HashSet<Card> cardsInPlay, int pot) {
+        System.out.println("Current pot: " + pot);
+        System.out.println("Your hand: " + getHand());
+        System.out.println("Cards in play: " + cardsInPlay);
+        System.out.println("Choose an action (fold/check/raise): ");
+
+        Scanner scanner = new Scanner(System.in);
+        String decision = scanner.nextLine().toLowerCase();
+
+        while (!decision.equals("fold") && !decision.equals("check") && !decision.equals("raise")) {
+            System.out.println("Invalid decision. Please choose again.");
+            decision = scanner.nextLine().toLowerCase();
+        }
+
+        return decision;
+    }
 
 
 }
