@@ -106,17 +106,16 @@ public class Main {
         //take decisions
 
         if (decisions[0].equals("check") && decisions[1].equals("check") && decisions[2].equals("check")){
-            if (checkForRoundEnd(austinBot.decision(cardsInPlay, pot), harryBot.decision(cardsInPlay, pot), scan.next())){
-                Hand austinBotHand = new Hand(austinBot.getHand());
-                Hand harryBotHand = new Hand(harryBot.getHand());
-                Hand playerHand = new Hand(player.getHand());
-                Hand[] arr = {austinBotHand, harryBotHand, playerHand};
-                int max = -1;
-                for (Hand x : arr){
-                    if (x.handRank(x.getCards()) > max){
-                        x = max;
+            if (checkForRoundEnd(harryBot.decision(cardsInPlay, pot), scan.next())){
+                Player[] arr = {austinBot, harryBot, player};
+                Player max = austinBot;
+                for (Player x : arr){
+                    if (x.getHand().handRank()){
+                        max = x;
                     }
                 }
+                System.out.println("Winner of pot: " + max + ". Amount won: " + pot);
+
 
             }
         }

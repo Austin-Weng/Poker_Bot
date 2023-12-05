@@ -1,6 +1,6 @@
 import java.util.*;
 public class Player {
-    private final HashSet<Card> hand = new HashSet<>();
+    private final Hand hand = new Hand();
     private int money = 0;
     public Player(int money) {this.money = money;}
     public Player(){};
@@ -12,9 +12,9 @@ public class Player {
         this.money = money;
     }
 
-    public HashSet<Card> getHand(){return hand;}
+    public Hand getHand(){return hand;}
 
-    public void addCard(Card card){this.hand.add(card);}
+    public void addCard(Card card){this.hand.addCard(card);}
     public String decision(HashSet<Card> cardsInPlay, int pot) {
         System.out.println("Current pot: " + pot);
         System.out.println("Your hand: " + getHand());

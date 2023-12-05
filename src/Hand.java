@@ -24,8 +24,8 @@ public class Hand {
     public int size() {
         return handCards.size();
     }
-    public int handRank(HashSet<Card> handCards) {
-        HashSet<Card> cards = getCards();
+    public int handRank() {
+        HashSet<Card> cards = handCards;
 
         if (isRoyalFlush(cards)) {
             return 10; // Royal Flush
