@@ -32,20 +32,20 @@ public class Main {
         cardsInPlay.add(deck.deal());
         cardsInPlay.add(deck.deal());
         System.out.println("Game initialized");
+        System.out.println(cardsInPlay);
 
-
-        //while none of the decisions are raise
+        //while decisions are not false
         System.out.println("Austin bot decision: " + austinBot.decision(cardsInPlay, pot));
         System.out.println("Harry bot decision: " + harryBot.decision(cardsInPlay, pot));
         System.out.println("What would you like to do? (fold/check/call/raise)");
         Scanner scan = new Scanner(System.in);
         String playerDecision = scan.next();
 
-        for (String person : orderOfPlay) {
-            if (person.equals("austin")) {
+        for (Player person : orderOfPlay) {
+            if (person == austinBot) {
                 decisions[0] = austinBot.decision(cardsInPlay, pot);
                 System.out.println("Austin bot decision: " + decisions[0]);
-            } else if (person.equals("harry")) {
+            } else if (person == harryBot) {
                 decisions[1] = harryBot.decision(cardsInPlay, pot);
                 System.out.println("Harry bot decision: " + decisions[1]);
             } else {
@@ -55,6 +55,7 @@ public class Main {
         }
         for (String decision : decisions) {
             if ("check".equals(decision)) {
+                continue;
             }
             else if ("raise".equals(decision)) {
                 int raiseAmount = scan.nextInt(); // Set your desired raise amount
@@ -70,50 +71,27 @@ public class Main {
         cardsInPlay.add(deck.deal());
         System.out.println(cardsInPlay);
 
-        System.out.println("Austin bot decision: " + austinBot.decision(cardsInPlay, pot));
-        System.out.println("Harry bot decision: " + harryBot.decision(cardsInPlay, pot));
-        System.out.println("What would you like to do? (fold/check/call/raise)");
-        scan = new Scanner(System.in);
-        playerDecision = scan.next();
-
-        for (String person : orderOfPlay) {
-            if (person.equals("austin")) {
-                decisions[0] = austinBot.decision(cardsInPlay, pot);
-                System.out.println("Austin bot decision: " + decisions[0]);
-            } else if (person.equals("harry")) {
-                decisions[1] = harryBot.decision(cardsInPlay, pot);
-                System.out.println("Harry bot decision: " + decisions[1]);
-            } else {
-                decisions[2] = playerDecision;
-                System.out.println("Your decision: " + decisions[2]);
-            }
-        }
-        for (String decision : decisions) {
-            if ("check".equals(decision)) {
-            }
-            else if ("raise".equals(decision)) {
-                int raiseAmount = scan.nextInt(); // Set your desired raise amount
-                pot += raiseAmount;
-                player.setMoney(player.getMoney() - raiseAmount);
-            } else if ("fold".equals(decision)) {
-                pot += player.getMoney();
-                player.setMoney(0);
-            }
-        }
-
-
         //Round 3: turn
+        burnPile.add(deck.deal());
+        cardsInPlay.add(deck.deal());
+        System.out.println(cardsInPlay);
+
         //Round 4: river
+        burnPile.add(deck.deal());
+        cardsInPlay.add(deck.deal());
+        System.out.println(cardsInPlay);
         //take decisions
 
         if (decisions[0].equals("check") && decisions[1].equals("check") && decisions[2].equals("check")){
             if (checkForRoundEnd(harryBot.decision(cardsInPlay, pot), scan.next())){
                 Player max = new Player();
-                max.
-                for (Player x : orderOfPlay){
-                    if (x.getHand().handRank() > max.getHand().handRank()){
-                        max = x;
-                    }
+                if (orderOfPlay[0].getHand().handRank() > orderOfPlay[1].getHand().handRank()){
+                    max = orderOfPlay[0];
+                } else {
+                    max = orderOfPlay[1];
+                }
+                if (max.getHand().handRank() < orderOfPlay[2].getHand().handRank()){
+                    max = orderOfPlay[2];
                 }
                 System.out.println("Winner of the pot...");
                 for(int i = 0; i < 3; i++){
