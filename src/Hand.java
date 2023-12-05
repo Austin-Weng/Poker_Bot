@@ -1,8 +1,10 @@
 import java.util.*;
 public class Hand {
     private HashSet<Card> handCards;
+    private int handRank = 0;
     public Hand() {
         this.handCards = new HashSet<Card>();
+        this.handRank = handRank();
     }
 
     public Hand(HashSet<Card> hand) {
@@ -23,6 +25,9 @@ public class Hand {
 
     public int size() {
         return handCards.size();
+    }
+    public void setHandRankZero(){
+        handRank = 0;
     }
     public int handRank() {
         HashSet<Card> cards = handCards;

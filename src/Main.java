@@ -12,7 +12,7 @@ public class Main {
         deck.shuffle();
 
         Player player = new Player(300);
-        String[] orderOfPlay = {"austin", "harry", "human player"};
+        Player[] orderOfPlay = {austinBot, harryBot, player};
         String[] decisions = new String[3];
 
         //Deal cards to all players
@@ -108,9 +108,9 @@ public class Main {
 
         if (decisions[0].equals("check") && decisions[1].equals("check") && decisions[2].equals("check")){
             if (checkForRoundEnd(harryBot.decision(cardsInPlay, pot), scan.next())){
-                Player[] arr = {austinBot, harryBot, player};
-                Player max = austinBot;
-                for (Player x : arr){
+                Player max = new Player();
+                max.
+                for (Player x : orderOfPlay){
                     if (x.getHand().handRank() > max.getHand().handRank()){
                         max = x;
                     }
@@ -121,6 +121,7 @@ public class Main {
                     System.out.println("...");
                 }
                 System.out.println(max + "! Amount won: " + pot);
+                max.setMoney(max.getMoney() + pot);
                 //restart
 
             }
