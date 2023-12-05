@@ -5,6 +5,10 @@ public class Hand {
         this.handCards = new HashSet<Card>();
     }
 
+    public Hand(HashSet<Card> hand) {
+        this.handCards = hand;
+    }
+
     public void addCard(Card card) {
         handCards.add(card);
     }
