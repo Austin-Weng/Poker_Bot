@@ -1,6 +1,7 @@
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         AustinBot austinBot = new AustinBot(300);
         HarryBot harryBot = new HarryBot(300);
         HashSet<Card> cardsInPlay = new HashSet<Card>();
@@ -110,12 +111,17 @@ public class Main {
                 Player[] arr = {austinBot, harryBot, player};
                 Player max = austinBot;
                 for (Player x : arr){
-                    if (x.getHand().handRank()){
+                    if (x.getHand().handRank() > max.getHand().handRank()){
                         max = x;
                     }
                 }
-                System.out.println("Winner of pot: " + max + ". Amount won: " + pot);
-
+                System.out.println("Winner of the pot...");
+                for(int i = 0; i < 3; i++){
+                    TimeUnit.SECONDS.sleep(1);
+                    System.out.println("...");
+                }
+                System.out.println(max + "! Amount won: " + pot);
+                //restart
 
             }
         }
