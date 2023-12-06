@@ -15,7 +15,7 @@ public class Player {
     public Hand getHand(){return hand;}
 
     public void addCard(Card card){this.hand.addCard(card);}
-    public String decision(HashSet<Card> cardsInPlay, int pot) {
+    public String decision(HashSet<Card> cardsInPlay, int pot, int amountToPay) {
         System.out.println("Current pot: " + pot);
         System.out.println("Your hand: " + getHand());
         System.out.println("Cards in play: " + cardsInPlay);

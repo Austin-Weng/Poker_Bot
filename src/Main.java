@@ -34,8 +34,12 @@ public class Main {
         System.out.println("Game initialized");
         System.out.println(cardsInPlay);
 
-        while (checkForRoundEnd(harryBot.decision(cardsInPlay, pot), player.decision(cardsInPlay, pot))){
-            System.out.println("Austin bot decision: " + austinBot.decision(cardsInPlay, pot));
+        int amountToPay = 0;
+        while (checkForRoundEnd(harryBot.decision(cardsInPlay, pot, amountToPay), player.decision(cardsInPlay, pot, amountToPay))){
+            System.out.println("Austin bot decision: " + austinBot.decision(cardsInPlay, pot, 0));
+            if (austinBot.decision(cardsInPlay, pot, 0).equals("raise")){
+
+            }
             System.out.println("Harry bot decision: " + harryBot.decision(cardsInPlay, pot));
             System.out.println("What would you like to do? (fold/check/call/raise)");
             Scanner scan = new Scanner(System.in);
