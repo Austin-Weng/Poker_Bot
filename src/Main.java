@@ -84,7 +84,7 @@ public class Main {
         //take decisions
 
         if (decisions[0].equals("check") && decisions[1].equals("check") && decisions[2].equals("check")){
-            if (checkForRoundEnd(harryBot.decision(cardsInPlay, pot), scan.next())){
+            if (checkForRoundEnd(harryBot.decision(cardsInPlay, pot), player.decision(cardsInPlay, pot))){
                 Player max = new Player();
                 if (orderOfPlay[0].getHand().handRank() > orderOfPlay[1].getHand().handRank()){
                     max = orderOfPlay[0];
