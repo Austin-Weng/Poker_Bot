@@ -26,9 +26,11 @@ public class Player {
 
         while (!decision.equals("fold") && !decision.equals("check") && !decision.equals("raise")) {
             System.out.println("Invalid decision. Please choose again.");
+            System.out.println("Choose an action (fold/check/raise): ");
             decision = scanner.nextLine().toLowerCase();
         }
 
         return decision;
     }
+
 }

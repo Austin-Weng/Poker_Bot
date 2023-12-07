@@ -22,7 +22,17 @@ public class Hand {
     public HashSet<Card> getCards() {
         return handCards;
     }
-
+    public String toString() {
+        StringBuilder result = new StringBuilder();
+        for (Card card : handCards) {
+            result.append(card).append(", ");
+        }
+        // Remove the trailing comma and space
+        if (result.length() > 0) {
+            result.setLength(result.length() - 2);
+        }
+        return result.toString();
+    }
     public int size() {
         return handCards.size();
     }
@@ -87,13 +97,11 @@ public class Hand {
         return hasThree && hasTwo;
     }
     private boolean isFlush(HashSet<Card> cards) {
-        String suit = cards.iterator().next().getSuit();
+        Set<String> suits = new HashSet<>();
         for (Card card : cards) {
-            if (!card.getSuit().equals(suit)) {
-                return false;
-            }
+            suits.add(card.getSuit());
         }
-        return true;
+        return suits.size() == 1;
     }
     private boolean isStraight(HashSet<Card> cards) {
 

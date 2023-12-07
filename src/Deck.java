@@ -1,6 +1,5 @@
 import java.util.*;
 
-
 public class Deck {
     private final Stack<Card> cards;
 

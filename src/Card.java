@@ -2,9 +2,9 @@
 
 import java.util.*;
 public class Card {
-    private final String suit;
+    private String suit;
 
-    private final String rank;
+    private String rank;
 
     public Card(String suit, String rank) {
         this.suit = suit;
@@ -25,7 +25,7 @@ public class Card {
     }
 
 
-    public int cardValue(Card card) {
+    private int cardValue(Card card) {
         if(card.getRank() == "Jack") {
             return 11;
         }
