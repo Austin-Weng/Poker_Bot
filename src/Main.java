@@ -59,7 +59,10 @@ public class Main {
             System.out.println("Player has folded. Skipping player's turn.");
         }
 
-        while (checkForRoundEnd(decisions[0], decisions[1], decisions[2])) {
+        while (!isRoundOver(decisions[0], decisions[1], decisions[2])) {
+            decisions[0] = null;
+            decisions[1] = null;
+            decisions[2] = null;
             currentBet = 0;
 
             for (int i = 0; i < 3; i++) {
@@ -68,6 +71,7 @@ public class Main {
                     System.out.println(orderOfPlay[i] + " decision: " + decisions[i]);
                 }
             }
+
         }
     }
 
@@ -104,8 +108,10 @@ public class Main {
         }
         return count;
     }
-    public static boolean checkForRoundEnd(String decision0, String decision1, String decision2) {
-        return "raise".equals(decision1) || ("raise".equals(decision2) && !decision0.equals("check"));
+    public static boolean isRoundOver(String decision0, String decision1, String decision2) {
+//        System.out.println("check for round end, decision1: " + decision1 + " decision2: " + decision2);
+//        System.out.println(!"raise".equals(decision1) && !"raise".equals(decision2));
+        return !decision1.startsWith("raise") && !decision2.startsWith("raise");
     }
 
 
