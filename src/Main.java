@@ -10,7 +10,6 @@ public class Main {
         Deck deck = new Deck();
         deck.initializeDeck();
         deck.shuffle();
-
         Player player = new Player(300);
         Player[] orderOfPlay = {austinBot, harryBot, player};
         String[] decisions = new String[3];
@@ -20,7 +19,6 @@ public class Main {
             person.addCard(deck.deal());
         }
         burnPile.add(deck.deal());
-        cardsInPlay.add(deck.deal());
         cardsInPlay.add(deck.deal());
         cardsInPlay.add(deck.deal());
         System.out.println("Game initialized");
@@ -40,34 +38,51 @@ public class Main {
             cardsInPlay.add(deck.deal());
             System.out.println(cardsInPlay);
 
+
             while (checkForRoundEnd(decisions[0], decisions[1])) {
+
+                String playerDecision;
+
+
                 for (Player person : orderOfPlay) {
-                    if (person == austinBot) {
-                        decisions[0] = austinBot.decision(cardsInPlay, pot, amountToPay);
+                    if (person == austinBot && (decisions[0] == null || !decisions[0].equals("fold"))) {
+                        decisions[0] = austinBot.decision(cardsInPlay, pot, 0);
                         System.out.println("Austin bot decision: " + decisions[0]);
-                    } else if (person == harryBot) {
-                        decisions[1] = harryBot.decision(cardsInPlay, pot, amountToPay);
+                    } else if (person == harryBot && (decisions[1] == null || !decisions[1].equals("fold"))) {
+                        decisions[1] = harryBot.decision(cardsInPlay, pot, 0);
                         System.out.println("Harry bot decision: " + decisions[1]);
-                    } else {
-                        decisions[2] = player.decision(cardsInPlay, pot, amountToPay);
+                    } else if (person == player) {
+                        if (decisions[2] != null && decisions[2].equals("fold")) {
+                            break;
+                        }
+                        playerDecision = player.decision(cardsInPlay, pot, 0);
+                        decisions[2] = playerDecision;
                         System.out.println("Your decision: " + decisions[2]);
                     }
                 }
 
+
+
+
                 for (String decision : decisions) {
                     if ("check".equals(decision)) {
-                        continue;
-                    } else if ("raise".equals(decision)) {
-                        int raiseAmount = new Scanner(System.in).nextInt();
+                        Card newCard = deck.deal();
+                        System.out.println("New card revealed: " + newCard);
+                        cardsInPlay.add(newCard);
+                    } else if (decision.startsWith("raise")) {
+                        int raiseAmount = Integer.parseInt(decision.split(" ")[1]);
                         pot += raiseAmount;
-                        player.setMoney(player.getMoney() - raiseAmount);
                         amountToPay = raiseAmount;
+                        player.setMoney(player.getMoney() - raiseAmount);
                     } else if ("fold".equals(decision)) {
                         pot += amountToPay;
                         amountToPay = 0;
                     }
                 }
             }
+
+// ... existing code ...
+
         }
 
         if (checkForRoundEnd(decisions[0], decisions[1]) && decisions[2].equals("check")) {
