@@ -17,10 +17,10 @@ public class Player {
     public void addCard(Card card){this.hand.addCard(card);}
 
 
-        public String decision(HashSet<Card> cardsInPlay, int pot, int amountToPay) {
+        public String decision(HashSet<Card> cardsInPlay, int pot, int currentBet) {
             System.out.println("Current pot: " + pot);
             System.out.println("Your hand: " + getHand());
-            System.out.println("Cards in play: " + cardsInPlay);
+            //System.out.println("Cards in play: " + cardsInPlay);
 
             String decision;
 
