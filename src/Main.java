@@ -42,46 +42,73 @@ public class Main {
 
     }
 
-    public static void bettingRound(String[] decisions, Player[] orderOfPlay, HashSet<Card> cardsInPlay, int pot, Deck deck, Player austinBot, Player harryBot, Player player){
+    public static void bettingRound(String[] decisions, Player[] orderOfPlay, HashSet<Card> cardsInPlay, int pot, Deck deck, Player austinBot, Player harryBot, Player player) {
         int currentBet = 0;
-        //First round
+        boolean playerFolded = false;
+
+        // First round
         decisions[0] = makeDecision(austinBot, orderOfPlay, cardsInPlay, pot, currentBet);
         System.out.println("Austin bot decision: " + decisions[0]);
         decisions[1] = makeDecision(harryBot, orderOfPlay, cardsInPlay, pot, currentBet);
         System.out.println("Harry bot decision: " + decisions[1]);
-        decisions[2] = makeDecision(player, orderOfPlay, cardsInPlay, pot, currentBet);
+        if (orderOfPlay[2] != null) {
+            decisions[2] = makeDecision(player, orderOfPlay, cardsInPlay, pot, currentBet);
+            System.out.println("Your decision: " + decisions[2]);
+        } else {
+            playerFolded = true;
+            System.out.println("Player has folded. Skipping player's turn.");
+        }
+
         while (checkForRoundEnd(decisions[0], decisions[1], decisions[2])) {
             currentBet = 0;
-            for (int i = 0; i < 3; i++){
-                if (orderOfPlay[i] != null){
+
+            for (int i = 0; i < 3; i++) {
+                if (orderOfPlay[i] != null && !playerFolded) {
                     decisions[i] = makeDecision(orderOfPlay[i], orderOfPlay, cardsInPlay, pot, currentBet);
-                    System.out.println(orderOfPlay[i] + "decision: " + decisions[i]);
+                    System.out.println(orderOfPlay[i] + " decision: " + decisions[i]);
                 }
             }
         }
     }
 
+
+    public static String makeDecision(Player player, Player[] orderOfPlay, HashSet<Card> cardsInPlay, int pot, int currentBet) {
+        if (player != null) { // Skip folded players
+            String decision = player.decision(cardsInPlay, pot, currentBet);
+            if (decision.startsWith("raise")) {
+                int raiseAmount = Integer.parseInt(decision.split(" ")[1]);
+                pot += raiseAmount;
+                currentBet += raiseAmount;
+            } else if (decision.equals("call")) {
+                pot += currentBet;
+            } else if (decision.equals("fold")) {
+                for (int i = 0; i < orderOfPlay.length; i++) {
+                    if (player == orderOfPlay[i]) {
+                        orderOfPlay[i] = null;
+                    }
+                }
+            }
+            return decision;
+        }
+        return "fold";
+    }
+
+
+
+    public static int activePlayers(Player[] players) {
+        int count = 0;
+        for (Player player : players) {
+            if (player != null) {
+                count++;
+            }
+        }
+        return count;
+    }
     public static boolean checkForRoundEnd(String decision0, String decision1, String decision2) {
         return "raise".equals(decision1) || ("raise".equals(decision2) && !decision0.equals("check"));
     }
 
-    public static String makeDecision(Player player, Player[] orderOfPlay, HashSet<Card> cardsInPlay, int pot, int currentBet){
-        String decision = player.decision(cardsInPlay, pot, currentBet);
-        if (decision.startsWith("raise")){
-            int raiseAmount = Integer.parseInt(decision.split(" ")[1]);
-            pot += raiseAmount;
-            currentBet = currentBet + raiseAmount;
-        } else if (decision.equals("call")){
-            pot += currentBet;
-        } else if (decision.equals("fold")){
-            for (int i = 0; i < orderOfPlay.length; i++){
-                if (player == orderOfPlay[i]){
-                    orderOfPlay[i] = null;
-                }
-            }
-        }
-        return decision;
-    }
+
 
     public static void checkWinner(Player[] orderOfPlay, int pot){
         Player winner = null;
