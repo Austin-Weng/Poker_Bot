@@ -27,22 +27,22 @@ public class Main {
         cardsInPlay.add(deck.deal());
         cardsInPlay.add(deck.deal());
         System.out.println("Cards In Play" + cardsInPlay);
-        bettingRound(decisions, orderOfPlay, cardsInPlay, pot.pot, deck, austinBot, harryBot, player);
+        bettingRound(decisions, orderOfPlay, cardsInPlay, pot, deck, austinBot, harryBot, player);
         System.out.println("ROUND 2: TURN");
         burnPile.add(deck.deal());
         cardsInPlay.add(deck.deal());
         System.out.println("Cards In Play" + cardsInPlay);
-        bettingRound(decisions, orderOfPlay, cardsInPlay, pot.pot, deck, austinBot, harryBot, player);
+        bettingRound(decisions, orderOfPlay, cardsInPlay, pot, deck, austinBot, harryBot, player);
         System.out.println("ROUND 3: RIVER");
         burnPile.add(deck.deal());
         cardsInPlay.add(deck.deal());
         System.out.println("Cards In Play" + cardsInPlay);
-        bettingRound(decisions, orderOfPlay, cardsInPlay, pot.pot, deck, austinBot, harryBot, player);
+        bettingRound(decisions, orderOfPlay, cardsInPlay, pot, deck, austinBot, harryBot, player);
         checkWinner(orderOfPlay, pot.pot);
 
     }
 
-    public static void bettingRound(String[] decisions, Player[] orderOfPlay, HashSet<Card> cardsInPlay, int pot, Deck deck, Player austinBot, Player harryBot, Player player) {
+    public static void bettingRound(String[] decisions, Player[] orderOfPlay, HashSet<Card> cardsInPlay, Pot pot, Deck deck, Player austinBot, Player harryBot, Player player) {
         int currentBet = 0;
         boolean playerFolded = false;
 
@@ -76,15 +76,15 @@ public class Main {
     }
 
 
-    public static String makeDecision(Player player, Player[] orderOfPlay, HashSet<Card> cardsInPlay, int pot, int currentBet) {
+    public static String makeDecision(Player player, Player[] orderOfPlay, HashSet<Card> cardsInPlay, Pot pot, int currentBet) {
         if (player != null) { // Skip folded players
-            String decision = player.decision(cardsInPlay, pot, currentBet);
+            String decision = player.decision(cardsInPlay, pot.pot, currentBet);
             if (decision.startsWith("raise")) {
                 int raiseAmount = Integer.parseInt(decision.split(" ")[1]);
-                pot += raiseAmount;
+                pot.pot += raiseAmount;
                 currentBet += raiseAmount;
             } else if (decision.equals("call")) {
-                pot += currentBet;
+                pot.pot += currentBet;
             } else if (decision.equals("fold")) {
                 for (int i = 0; i < orderOfPlay.length; i++) {
                     if (player == orderOfPlay[i]) {
