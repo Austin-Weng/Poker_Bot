@@ -7,7 +7,7 @@ public class Main {
         HarryBot harryBot = new HarryBot(300);
         HashSet<Card> cardsInPlay = new HashSet<>();
         HashSet<Card> burnPile = new HashSet<>();
-        int pot = 0;
+        Pot pot = new Pot(0);
         Deck deck = new Deck();
         deck.initializeDeck();
         deck.shuffle();
@@ -27,18 +27,18 @@ public class Main {
         cardsInPlay.add(deck.deal());
         cardsInPlay.add(deck.deal());
         System.out.println("Cards In Play" + cardsInPlay);
-        bettingRound(decisions, orderOfPlay, cardsInPlay, pot, deck, austinBot, harryBot, player);
+        bettingRound(decisions, orderOfPlay, cardsInPlay, pot.pot, deck, austinBot, harryBot, player);
         System.out.println("ROUND 2: TURN");
         burnPile.add(deck.deal());
         cardsInPlay.add(deck.deal());
         System.out.println("Cards In Play" + cardsInPlay);
-        bettingRound(decisions, orderOfPlay, cardsInPlay, pot, deck, austinBot, harryBot, player);
+        bettingRound(decisions, orderOfPlay, cardsInPlay, pot.pot, deck, austinBot, harryBot, player);
         System.out.println("ROUND 3: RIVER");
         burnPile.add(deck.deal());
         cardsInPlay.add(deck.deal());
         System.out.println("Cards In Play" + cardsInPlay);
-        bettingRound(decisions, orderOfPlay, cardsInPlay, pot, deck, austinBot, harryBot, player);
-        checkWinner(orderOfPlay, pot);
+        bettingRound(decisions, orderOfPlay, cardsInPlay, pot.pot, deck, austinBot, harryBot, player);
+        checkWinner(orderOfPlay, pot.pot);
 
     }
 
