@@ -13,6 +13,8 @@ public class AustinBot extends Player{
         System.out.println(hand);
         handTotal.addCards(hand.getCards());
         handTotal.addCards(cardsInPlay);
+        handRank = handTotal.handRank();
+        Deck tempDeck = new Deck();
 
         //Hand hand = cardsInPlay;
         if (currentBet.currentBet == 0){

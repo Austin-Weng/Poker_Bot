@@ -7,8 +7,8 @@ public class HarryBot extends Player {
         this.setMoney(money);
     }
 
-    public String decision(HashSet<Card> cardsInPlay, int pot, int currentBet){
-        if (currentBet == 0){
+    public String decision(HashSet<Card> cardsInPlay, int pot, CurrentBet currentBet){
+        if (currentBet.currentBet == 0){
             return "check";
         } else {
             return "call";
