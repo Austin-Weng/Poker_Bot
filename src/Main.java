@@ -78,7 +78,7 @@ public class Main {
 
     public static String makeDecision(Player player, Player[] orderOfPlay, HashSet<Card> cardsInPlay, Pot pot, CurrentBet currentBet) {
         if (player != null) { // Skip folded players
-            String decision = player.decision(cardsInPlay, pot.pot, currentBet.currentBet);
+            String decision = player.decision(cardsInPlay, pot.pot, currentBet);
             if (decision.startsWith("raise")) {
                 int raiseAmount = Integer.parseInt(decision.split(" ")[1]);
                 pot.pot += raiseAmount;
