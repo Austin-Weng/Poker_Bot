@@ -43,7 +43,7 @@ public class Main {
     }
 
     public static void bettingRound(String[] decisions, Player[] orderOfPlay, HashSet<Card> cardsInPlay, Pot pot, Deck deck, Player austinBot, Player harryBot, Player player) {
-        int currentBet = 0;
+        CurrentBet currentBet = new CurrentBet(0);
         boolean playerFolded = false;
 
         // First round
@@ -63,7 +63,7 @@ public class Main {
             decisions[0] = null;
             decisions[1] = null;
             decisions[2] = null;
-            currentBet = 0;
+            currentBet.currentBet = 0;
 
             for (int i = 0; i < 3; i++) {
                 if (orderOfPlay[i] != null && !playerFolded) {
@@ -76,15 +76,15 @@ public class Main {
     }
 
 
-    public static String makeDecision(Player player, Player[] orderOfPlay, HashSet<Card> cardsInPlay, Pot pot, int currentBet) {
+    public static String makeDecision(Player player, Player[] orderOfPlay, HashSet<Card> cardsInPlay, Pot pot, CurrentBet currentBet) {
         if (player != null) { // Skip folded players
-            String decision = player.decision(cardsInPlay, pot.pot, currentBet);
+            String decision = player.decision(cardsInPlay, pot.pot, currentBet.currentBet);
             if (decision.startsWith("raise")) {
                 int raiseAmount = Integer.parseInt(decision.split(" ")[1]);
                 pot.pot += raiseAmount;
-                currentBet += raiseAmount;
+                currentBet.currentBet += raiseAmount;
             } else if (decision.equals("call")) {
-                pot.pot += currentBet;
+                pot.pot += currentBet.currentBet;
             } else if (decision.equals("fold")) {
                 for (int i = 0; i < orderOfPlay.length; i++) {
                     if (player == orderOfPlay[i]) {

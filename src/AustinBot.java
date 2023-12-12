@@ -8,7 +8,11 @@ public class AustinBot extends Player{
     }
 
     public String decision(HashSet<Card> cardsInPlay, int pot, int currentBet){
-        double handStrength = 0.0;
+        int handRank = 0;
+        Hand handTotal = new Hand();
+        hand.addCards(hand.getCards());
+        hand.addCards(cardsInPlay);
+
         //Hand hand = cardsInPlay;
         if (currentBet == 0){
             return "check";

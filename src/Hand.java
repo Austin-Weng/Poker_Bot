@@ -14,6 +14,9 @@ public class Hand {
     public void addCard(Card card) {
         handCards.add(card);
     }
+    public void addCards(HashSet<Card> cards){
+        handCards.addAll(cards);
+    }
 
     public void clear() {
         handCards.clear();
