@@ -2,6 +2,7 @@ import java.util.*;
 public class Player {
     private final Hand hand = new Hand();
     private int money = 0;
+    private boolean hasFolded;
     public Player(int money) {this.money = money;}
     public Player(){}
 
@@ -10,6 +11,13 @@ public class Player {
     }
     public void setMoney(int money){
         this.money = money;
+    }
+    public boolean hasFolded() {
+        return hasFolded;
+    }
+
+    public void setFolded(boolean folded) {
+        this.hasFolded = folded;
     }
 
     public Hand getHand(){return hand;}
