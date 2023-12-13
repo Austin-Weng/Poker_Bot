@@ -55,22 +55,7 @@ public class Main {
     public static void bettingRound(String[] decisions, Player[] orderOfPlay, HashSet<Card> cardsInPlay, Pot pot, Deck deck) {
         CurrentBet currentBet = new CurrentBet(0);
 
-        for (int i = 0; i < orderOfPlay.length; i++) {
-            Player player = orderOfPlay[i];
-            if (player != null && !player.hasFolded()) {
-                decisions[i] = makeDecision(player, orderOfPlay, cardsInPlay, pot, currentBet);
-                System.out.println(player + " decision: " + decisions[i]);
-            } else {
-                System.out.println(player + " has folded. Skipping player's turn.");
-                // If the player has folded, set their decision to "fold" and skip their turn
-                decisions[i] = "fold";
-            }
-        }
-
-        while (!isRoundOver(decisions)) {
-            Arrays.fill(decisions, null);
-            currentBet.currentBet = 0;
-
+        while (countActivePlayers(orderOfPlay) > 1) {
             for (int i = 0; i < orderOfPlay.length; i++) {
                 Player player = orderOfPlay[i];
                 if (player != null && !player.hasFolded()) {
@@ -82,8 +67,24 @@ public class Main {
                     decisions[i] = "fold";
                 }
             }
+
+            // If only one player is active, end the round
+            if (countActivePlayers(orderOfPlay) == 1) {
+                break;
+            }
         }
     }
+
+    private static int countActivePlayers(Player[] orderOfPlay) {
+        int activePlayers = 0;
+        for (Player player : orderOfPlay) {
+            if (player != null && !player.hasFolded()) {
+                activePlayers++;
+            }
+        }
+        return activePlayers;
+    }
+
 
     // Modify makeDecision method to set player's folded status
     public static String makeDecision(Player player, Player[] orderOfPlay, HashSet<Card> cardsInPlay, Pot pot, CurrentBet currentBet) {
@@ -118,17 +119,23 @@ public class Main {
         Player winner = null;
         int maxRank = 0;
 
+        // Find the remaining player (the one who has not folded)
         for (int i = 0; i < orderOfPlay.length; i++) {
-            if (orderOfPlay[i] != null) {
-                int rank = orderOfPlay[i].getHand().handRank();
-                if (rank > maxRank) {
-                    winner = orderOfPlay[i];
-                    maxRank = rank;
-                }
+            if (orderOfPlay[i] != null && !orderOfPlay[i].hasFolded()) {
+                winner = orderOfPlay[i];
+                break;
             }
         }
 
-        System.out.println("Winner of the pot: " + winner + "! Amount won: " + pot);
-        winner.setMoney(winner.getMoney() + pot);
+        // If there is a winner, print their hand and the amount won
+        if (winner != null) {
+            System.out.println("Winner: " + winner);
+            System.out.println("Winner's Hand: " + winner.getHand());
+            System.out.println("Amount won: " + pot);
+
+            // Award the pot to the winner
+            winner.setMoney(winner.getMoney() + pot);
+        }
     }
+
 }
