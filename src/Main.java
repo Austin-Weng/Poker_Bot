@@ -54,18 +54,34 @@ public class Main {
 
     public static void bettingRound(String[] decisions, Player[] orderOfPlay, HashSet<Card> cardsInPlay, Pot pot, Deck deck) {
         CurrentBet currentBet = new CurrentBet(0);
+        int consecutiveCalls = 0;
 
         while (countActivePlayers(orderOfPlay) > 1) {
+            boolean allCalled = true;
+
             for (int i = 0; i < orderOfPlay.length; i++) {
                 Player player = orderOfPlay[i];
                 if (player != null && !player.hasFolded()) {
                     decisions[i] = makeDecision(player, orderOfPlay, cardsInPlay, pot, currentBet);
                     System.out.println(player + " decision: " + decisions[i]);
+
+                    if (!decisions[i].equals("call")) {
+                        allCalled = false;
+                    }
                 } else {
                     System.out.println(player + " has folded. Skipping player's turn.");
-                    // If the player has folded, set their decision to "fold" and skip their turn
                     decisions[i] = "fold";
                 }
+            }
+
+            // If all players called, break the loop
+            if (allCalled) {
+                consecutiveCalls++;
+                if (consecutiveCalls >= countActivePlayers(orderOfPlay)) {
+                    break;
+                }
+            } else {
+                consecutiveCalls = 0;
             }
 
             // If only one player is active, end the round
@@ -74,6 +90,7 @@ public class Main {
             }
         }
     }
+
 
     private static int countActivePlayers(Player[] orderOfPlay) {
         int activePlayers = 0;
