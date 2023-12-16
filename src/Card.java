@@ -40,4 +40,14 @@ public class Card {
         }
         return Integer.parseInt(card.getRank());
     }
+
+    @Override
+    public boolean equals(Object o){
+        if (!(o instanceof Card)){
+            return false;
+        }
+        Card c = (Card) o;
+        return this.suit.equals(c.suit) && this.rank.equals(c.rank);
+    }
+
 }
