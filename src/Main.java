@@ -3,13 +3,13 @@ import java.util.*;
 public class Main {
     public static void main(String[] args) throws InterruptedException {
         AustinBot1 austinBot1 = new AustinBot1(300);
-        HarryBot1 harryBot1 = new HarryBot1(300);
-        AustinBot2 austinBot2 = new AustinBot2(300);
-        HarryBot2 harryBot2 = new HarryBot2(300);
-        AustinBot3 austinBot3 = new AustinBot3(300);
-        HarryBot3 harryBot3 = new HarryBot3(300);
-        AustinBot4 austinBot4 = new AustinBot4(300);
-        HarryBot4 harryBot4 = new HarryBot4(300);
+        AustinBot1 harryBot1 = new AustinBot1(300);
+        AustinBot1 austinBot2 = new AustinBot1(300);
+        AustinBot1 harryBot2 = new AustinBot1(300);
+        AustinBot1 austinBot3 = new AustinBot1(300);
+        AustinBot1 harryBot3 = new AustinBot1(300);
+        AustinBot1 austinBot4 = new AustinBot1(300);
+        AustinBot1 harryBot4 = new AustinBot1(300);
 
         HashSet<Card> cardsInPlay = new HashSet<>();
         HashSet<Card> burnPile = new HashSet<>();
@@ -19,6 +19,10 @@ public class Main {
         deck.shuffle();
 
         Player[] orderOfPlay = {austinBot1, harryBot1, austinBot2, harryBot2, austinBot3, harryBot3, austinBot4, harryBot4};
+        HashMap<Player, Integer> wins = new HashMap<>();
+        for (Player p : orderOfPlay){
+            wins.put(p, 0);
+        }
         String[] decisions = new String[8];
 
         // Deal initial cards to each bot
@@ -28,28 +32,43 @@ public class Main {
         }
 
         // Betting rounds
-        for (int round = 1; round <= 3; round++) {
-            System.out.println("ROUND " + round);
+        for (int i = 0; i < 1000; i++) {
+            while(isWinner(orderOfPlay) == null){
+                for (int round = 1; round <= 3; round++) {
+                    //System.out.println("ROUND " + round);
 
-            // Reveal three community cards in the first round
-            if (round == 1) {
-                burnPile.add(deck.deal());
-                cardsInPlay.add(deck.deal());
-                cardsInPlay.add(deck.deal());
-                cardsInPlay.add(deck.deal());
-            } else {
-                // Add one community card in rounds 2 and 3
-                burnPile.add(deck.deal());
-                cardsInPlay.add(deck.deal());
+                    // Reveal three community cards in the first round
+                    if (round == 1) {
+                        burnPile.add(deck.deal());
+                        cardsInPlay.add(deck.deal());
+                        cardsInPlay.add(deck.deal());
+                        cardsInPlay.add(deck.deal());
+                    } else {
+                        // Add one community card in rounds 2 and 3
+                        burnPile.add(deck.deal());
+                        cardsInPlay.add(deck.deal());
+                    }
+
+                    //System.out.println("Community Cards: " + cardsInPlay);
+
+                    bettingRound(decisions, orderOfPlay, cardsInPlay, pot, deck);
+                }
+
+
+                checkWinner(orderOfPlay, pot.pot);
             }
-
-            System.out.println("Community Cards: " + cardsInPlay);
-
-            bettingRound(decisions, orderOfPlay, cardsInPlay, pot, deck);
+            wins.replace(isWinner(orderOfPlay), wins.get(isWinner(orderOfPlay)) + 1);
         }
-
-
-        checkWinner(orderOfPlay, pot.pot);
+        int mostWins = 0;
+        Player pMostWins = null;
+        for (Player p : wins.keySet()){
+            if (wins.get(p) > mostWins){
+                mostWins = wins.get(p);
+                pMostWins = p;
+            }
+        }
+        assert pMostWins != null;
+        pMostWins.variables();
     }
 
     public static void bettingRound(String[] decisions, Player[] orderOfPlay, HashSet<Card> cardsInPlay, Pot pot, Deck deck) {
@@ -58,18 +77,20 @@ public class Main {
 
         while (countActivePlayers(orderOfPlay) > 1) {
             boolean allCalled = true;
-
             for (int i = 0; i < orderOfPlay.length; i++) {
                 Player player = orderOfPlay[i];
-                if (player != null && !player.hasFolded()) {
+                if (player.getMoney() <= 0) {
+                    player.setBroke(true);
+                }
+                if (player != null && !player.hasFolded() && !player.getIsBroke()) {
                     decisions[i] = makeDecision(player, orderOfPlay, cardsInPlay, pot, currentBet);
-                    System.out.println(player + " decision: " + decisions[i]);
+                    //System.out.println(player + " decision: " + decisions[i]);
 
                     if (!decisions[i].equals("call")) {
                         allCalled = false;
                     }
                 } else {
-                    System.out.println(player + " has folded. Skipping player's turn.");
+                    //System.out.println(player + " has folded/isBroke. Skipping player's turn.");
                     decisions[i] = "fold";
                 }
             }
@@ -146,12 +167,29 @@ public class Main {
 
         // If there is a winner, print their hand and the amount won
         if (winner != null) {
-            System.out.println("Winner: " + winner);
-            System.out.println("Winner's Hand: " + winner.getHand());
-            System.out.println("Amount won: " + pot);
+            //System.out.println("Winner: " + winner);
+            //System.out.println("Winner's Hand: " + winner.getHand());
+            //System.out.println("Amount won: " + pot);
 
             // Award the pot to the winner
             winner.setMoney(winner.getMoney() + pot);
+        }
+    }
+
+    public static Player isWinner(Player[] orderOfPlay){
+        int brokeCount = 0;
+        Player winner = null;
+        for (Player p : orderOfPlay) {
+            if (!p.getIsBroke()){
+                winner = p;
+            } else {
+                brokeCount++;
+            }
+        }
+        if (brokeCount == orderOfPlay.length-1){
+            return winner;
+        } else {
+            return null;
         }
     }
 

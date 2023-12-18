@@ -1,10 +1,14 @@
 import java.util.*;
 public class Player {
     private final Hand hand = new Hand();
+    private boolean isBroke = false;
     private int money = 0;
     private boolean hasFolded;
     public Player(int money) {this.money = money;}
     public Player(){}
+    public void variables(){
+        System.out.println("");
+    }
 
     public int getMoney(){
         return money;
@@ -18,6 +22,12 @@ public class Player {
 
     public void setFolded(boolean folded) {
         this.hasFolded = folded;
+    }
+    public boolean getIsBroke(){
+        return isBroke;
+    }
+    public void setBroke(boolean isBroke){
+        this.isBroke = isBroke;
     }
 
     public Hand getHand(){return hand;}
