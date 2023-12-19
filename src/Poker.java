@@ -2,6 +2,8 @@ import java.util.HashSet;
 
 public class Poker {
     public static void playGame(Player[] orderOfPlay, HashSet<Card> cardsInPlay, Pot pot, Deck deck) {
+
+        HashSet<Card> burnPile = new HashSet<>();
         String[] decisions = new String[8];
 
         // Deal initial cards to each bot
@@ -13,37 +15,43 @@ public class Poker {
         // Betting rounds
         for (int round = 1; round <= 3; round++) {
 
-            // Reveal community cards
-            revealCommunityCards(cardsInPlay, deck, round);
+            // Reveal three community cards in the first round
+            if (round == 1) {
+                burnPile.add(deck.deal());
+                cardsInPlay.add(deck.deal());
+                cardsInPlay.add(deck.deal());
+                cardsInPlay.add(deck.deal());
+            } else {
+                // Add one community card in rounds 2 and 3
+                burnPile.add(deck.deal());
+                cardsInPlay.add(deck.deal());
+            }
+
 
             bettingRound(decisions, orderOfPlay, cardsInPlay, pot, deck);
         }
 
+
         checkWinner(orderOfPlay, pot.pot);
     }
 
-    private static void revealCommunityCards(HashSet<Card> cardsInPlay, Deck deck, int round) {
-        int cardsToAdd = (round == 1) ? 3 : 1;
-        for (int i = 0; i < cardsToAdd; i++) {
-            deck.deal(); // Burn a card
-            cardsInPlay.add(deck.deal());
-        }
-    }
-
-    private static void bettingRound(String[] decisions, Player[] orderOfPlay, HashSet<Card> cardsInPlay, Pot pot, Deck deck) {
+    public static void bettingRound(String[] decisions, Player[] orderOfPlay, HashSet<Card> cardsInPlay, Pot pot, Deck deck) {
         CurrentBet currentBet = new CurrentBet(0);
 
-        while (countActivePlayers(orderOfPlay) > 1 && !isRoundOver(decisions)) {
+        while (countActivePlayers(orderOfPlay) > 1) {
             for (int i = 0; i < orderOfPlay.length; i++) {
                 Player player = orderOfPlay[i];
                 if (player != null && !player.hasFolded()) {
                     decisions[i] = makeDecision(player, orderOfPlay, cardsInPlay, pot, currentBet);
-                    System.out.println(player + " decision: " + decisions[i]);
                 } else {
-                    System.out.println(player + " has folded. Skipping player's turn.");
                     // If the player has folded, set their decision to "fold" and skip their turn
                     decisions[i] = "fold";
                 }
+            }
+
+            // If only one player is active, end the round
+            if (countActivePlayers(orderOfPlay) == 1) {
+                break;
             }
         }
     }
@@ -58,7 +66,9 @@ public class Poker {
         return activePlayers;
     }
 
-    private static String makeDecision(Player player, Player[] orderOfPlay, HashSet<Card> cardsInPlay, Pot pot, CurrentBet currentBet) {
+
+    // Modify makeDecision method to set player's folded status
+    public static String makeDecision(Player player, Player[] orderOfPlay, HashSet<Card> cardsInPlay, Pot pot, CurrentBet currentBet) {
         if (!player.hasFolded()) { // Skip folded players
             String decision = player.decision(cardsInPlay, pot.pot, currentBet);
             if (decision.equals("fold")) {
@@ -76,7 +86,8 @@ public class Poker {
         }
     }
 
-    private static boolean isRoundOver(String[] decisions) {
+
+    public static boolean isRoundOver(String[] decisions) {
         for (String decision : decisions) {
             if (decision != null && decision.startsWith("raise")) {
                 return false;
@@ -85,7 +96,7 @@ public class Poker {
         return true;
     }
 
-    private static void checkWinner(Player[] orderOfPlay, int pot) {
+    public static void checkWinner(Player[] orderOfPlay, int pot) {
         Player winner = null;
         int maxRank = 0;
 
@@ -99,10 +110,10 @@ public class Poker {
 
         // If there is a winner, print their hand and the amount won
         if (winner != null) {
-            System.out.println("Winner: " + winner);
 
             // Award the pot to the winner
             winner.setMoney(winner.getMoney() + pot);
         }
     }
-}
+    }
+

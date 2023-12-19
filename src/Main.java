@@ -35,7 +35,7 @@ public class Main {
                     austinBot2Wins, harryBot2Wins, austinBot3Wins, harryBot3Wins, austinBot4Wins, harryBot4Wins);
         }
 
-        // Print results
+
         System.out.println("AustinBot1 Wins: " + austinBot1Wins);
         System.out.println("HarryBot1 Wins: " + harryBot1Wins);
         System.out.println("AustinBot2 Wins: " + austinBot2Wins);

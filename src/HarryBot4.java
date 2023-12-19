@@ -5,7 +5,9 @@ public class HarryBot4 extends Player {
     public HarryBot4(int money) {
         this.setMoney(money);
     }
-
+    public String toString() {
+        return "HarryBot4";
+    }
     @Override
     public String decision(HashSet<Card> cardsInPlay, int pot, CurrentBet currentBet) {
         Random random = new Random();
