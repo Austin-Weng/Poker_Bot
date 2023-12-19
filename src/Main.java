@@ -1,6 +1,16 @@
 import java.util.*;
 public class Main {
     public static void main(String[] args) {
+
+        AustinBot1 austinBot1 = new AustinBot1(300);
+        HarryBot1 harryBot1 = new HarryBot1(300);
+        AustinBot1 austinBot2 = new AustinBot1(300);
+        HarryBot2 harryBot2 = new HarryBot2(300);
+        AustinBot1 austinBot3 = new AustinBot1(300);
+        HarryBot3 harryBot3 = new HarryBot3(300);
+        AustinBot1 austinBot4 = new AustinBot1(300);
+        HarryBot4 harryBot4 = new HarryBot4(300);
+
         numWins austinBot1Wins = new numWins(0);
         numWins harryBot1Wins = new numWins(0);
         numWins austinBot2Wins = new numWins(0);
@@ -9,18 +19,22 @@ public class Main {
         numWins harryBot3Wins = new numWins(0);
         numWins austinBot4Wins = new numWins(0);
         numWins harryBot4Wins = new numWins(0);
+        int[] winsArr = {austinBot1Wins.wins, harryBot1Wins.wins,
+                austinBot2Wins.wins, harryBot2Wins.wins,
+                austinBot3Wins.wins, harryBot3Wins.wins,
+                austinBot4Wins.wins, harryBot4Wins.wins};
 
-        for (int game = 1; game <= 10; game++) {
+        for (int game = 1; game <= 39; game++) {
 
 
-            AustinBot1 austinBot1 = new AustinBot1(300);
-            HarryBot1 harryBot1 = new HarryBot1(300);
-            AustinBot1 austinBot2 = new AustinBot1(300);
-            HarryBot2 harryBot2 = new HarryBot2(300);
-            AustinBot1 austinBot3 = new AustinBot1(300);
-            HarryBot3 harryBot3 = new HarryBot3(300);
-            AustinBot1 austinBot4 = new AustinBot1(300);
-            HarryBot4 harryBot4 = new HarryBot4(300);
+            austinBot1 = new AustinBot1(300);
+            harryBot1 = new HarryBot1(300);
+            austinBot2 = new AustinBot1(300);
+            harryBot2 = new HarryBot2(300);
+            austinBot3 = new AustinBot1(300);
+            harryBot3 = new HarryBot3(300);
+            austinBot4 = new AustinBot1(300);
+            harryBot4 = new HarryBot4(300);
 
             Player[] orderOfPlay = {austinBot1, harryBot1, austinBot2, harryBot2, austinBot3, harryBot3, austinBot4, harryBot4};
             HashSet<Card> cardsInPlay = new HashSet<>();
@@ -37,12 +51,24 @@ public class Main {
 
 
         System.out.println("AustinBot1 Wins: " + austinBot1Wins.wins);
+        if (beatMoreThanHalf(winsArr, austinBot1Wins.wins)){
+            austinBot1.variables();
+        }
         System.out.println("HarryBot1 Wins: " + harryBot1Wins.wins);
         System.out.println("AustinBot2 Wins: " + austinBot2Wins.wins);
+        if (beatMoreThanHalf(winsArr, austinBot2Wins.wins)){
+            austinBot2.variables();
+        }
         System.out.println("HarryBot2 Wins: " + harryBot2Wins.wins);
         System.out.println("AustinBot3 Wins: " + austinBot3Wins.wins);
+        if (beatMoreThanHalf(winsArr, austinBot3Wins.wins)){
+            austinBot3.variables();
+        }
         System.out.println("HarryBot3 Wins: " + harryBot3Wins.wins);
         System.out.println("AustinBot4 Wins: " + austinBot4Wins.wins);
+        if (beatMoreThanHalf(winsArr, austinBot4Wins.wins)){
+            austinBot4.variables();
+        }
         System.out.println("HarryBot4 Wins: " + harryBot4Wins.wins);
     }
 
@@ -87,6 +113,16 @@ public class Main {
 
             //System.out.println("Game " + game + " Winner: " + winnerString);
         }
+    }
+
+    public static boolean beatMoreThanHalf(int[] wins, int check){
+        int numGreater = 0;
+        for (int i : wins){
+            if (check > i){
+                numGreater++;
+            }
+        }
+        return numGreater > 4;
     }
 
 }

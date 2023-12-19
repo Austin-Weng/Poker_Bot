@@ -18,7 +18,7 @@ public class AustinBot1 extends Player{
     private int hueristicBetAmount2 = (int) (Math.random() * 1000);
     private int hueristicBetAmount3 = (int) (Math.random() * 1000);
     private int hueristicBetAmount4 = (int) (Math.random() * 1000);
-    @Override
+
     public void variables(){
         System.out.println("hrMultiplier: " + hrMultiplier);
         System.out.println("betMultiplier: " + betMultiplier);
@@ -52,37 +52,37 @@ public class AustinBot1 extends Player{
         boolean bet = false;
         int amountBet = 0;
 
-        double hueristic = handRank * hrMultiplier - currentBet.currentBet * betMultiplier;
+        double heuristic = handRank * hrMultiplier - currentBet.currentBet * betMultiplier;
         if (currentBet.currentBet == 0){
-            if (hueristic > check1){
-                return "raise " + (int) (Math.min(getMoney(), hueristic/hueristicBetAmount1));
+            if (heuristic > check1){
+                return "raise " + (int) (Math.min(getMoney(), heuristic/hueristicBetAmount1));
             } else {
                 return "check";
             }
         } else {
-            if (hueristic < 0){
+            if (heuristic < 0){
                 return "fold";
-            } else if (hueristic < check2){
+            } else if (heuristic < check2){
                 if (currentBet.currentBet > getMoney() * handMultiplier1) {
                     return "fold";
                 } else {
                     return "call";
                 }
-            } else if (hueristic < check3){
+            } else if (heuristic < check3){
                 if (currentBet.currentBet > getMoney() * handMultiplier2) {
                     return "fold";
                 } else {
-                    if (hueristic > check4){
-                        return "raise " + (int) (Math.min(getMoney(), hueristic/hueristicBetAmount2));
+                    if (heuristic > check4){
+                        return "raise " + (int) (Math.min(getMoney(), heuristic/hueristicBetAmount2));
                     }
                     return "call";
                 }
-            } else if (hueristic < check5){
+            } else if (heuristic < check5){
                 if (currentBet.currentBet > getMoney() * handMultiplier3) {
                     return "fold";
                 } else {
-                    if (hueristic > check6){
-                        return "raise " + (int) (Math.min(getMoney(), hueristic/hueristicBetAmount3));
+                    if (heuristic > check6){
+                        return "raise " + (int) (Math.min(getMoney(), heuristic/hueristicBetAmount3));
                     }
                     return "call";
                 }
@@ -90,7 +90,7 @@ public class AustinBot1 extends Player{
                 if (currentBet.currentBet > getMoney() * handMultiplier4) {
                     return "fold";
                 } else {
-                    return "raise " + (int) (Math.min(getMoney(), hueristic/hueristicBetAmount4));
+                    return "raise " + (int) (Math.min(getMoney(), heuristic/hueristicBetAmount4));
                 }
             }
         }
