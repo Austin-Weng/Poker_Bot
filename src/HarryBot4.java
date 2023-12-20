@@ -14,6 +14,7 @@ public class HarryBot4 extends Player {
 
         int handRank = getHand().handRank();
         double raiseProbability = 0.2;
+
         if (handRank >= 7) {
             raiseProbability = 0.8;
         } else if (handRank >= 5) {
@@ -21,12 +22,14 @@ public class HarryBot4 extends Player {
         }
 
         if (random.nextDouble() < raiseProbability) {
-            int maxRaise = Math.min(currentBet.currentBet + 100, Math.min(getMoney(), 300)); // Limit raise to 300 or available money
+            int maxRaise = Math.min(currentBet.currentBet + 100, Math.min(getMoney(), 300));
+            maxRaise = Math.max(1, maxRaise); // Ensure that maxRaise is at least 1
             return "raise " + (currentBet.currentBet + random.nextInt(maxRaise));
         } else if (currentBet.currentBet == 0) {
-            return (random.nextDouble() < 0.1) ? "raise " + random.nextInt(50) : "check";
+            return (random.nextDouble() < 0.1) ? "raise " + (random.nextInt(49) + 1) : "check";
         } else {
             return (random.nextDouble() < 0.2) ? "fold" : "call";
         }
     }
+
 }
