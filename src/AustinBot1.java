@@ -46,48 +46,40 @@ public class AustinBot1 extends Player{
         this.setMoney(money);
     }
 
-    public String decision(HashSet<Card> cardsInPlay, int pot, CurrentBet currentBet) {
-        double heuristic = 0;
+    public String decision(HashSet<Card> cardsInPlay, int pot, CurrentBet currentBet){
         Hand handTotal = new Hand();
         int handRank = 0;
-        //System.out.println(getHand());
         handTotal.addCards(getHand().getCards());
         handTotal.addCards(cardsInPlay);
         handRank = handTotal.handRank();
-        String decision = "fold";
 
-        boolean bet = false;
-        int amountBet = 0;
+        double raiseProbability = 0.2;
 
-        heuristic = handRank * 100 - currentBet.currentBet;
-        if (heuristic < 80){
-            decision =  "fold";
+        if (handRank > 6) {
+            raiseProbability = 0.75;
+        } else if (handRank > 4) {
+            raiseProbability = 0.5;
         }
-        if (currentBet.currentBet == 0){
-            if (heuristic > 250){
-                decision = "raise " + Math.min(getMoney(), (int) (Math.random() * 10));
+
+        if (Math.random() < raiseProbability) {
+            return "raise " + Math.min((int) (Math.random() * 300 + 100), getMoney());
+        } else if (currentBet.currentBet == 0) {
+            if (Math.random() < 0.1){
+                return "raise " + Math.min(getMoney(), (int) (Math.random() * 100 + 1));
             } else {
-                decision = "check";
+                return "check";
             }
         } else {
-            if (heuristic < 300 && heuristic > 80){
-                if (currentBet.currentBet > getMoney() * 0.4) {
-                    decision = "fold";
-                } else if (getMoney() > currentBet.currentBet){
-                    decision = "call";
-                }
-            } else if (heuristic < 600 && heuristic > 300){
-                if (currentBet.currentBet > getMoney() * 0.6) {
-                    decision = "fold";
+            if (Math.random() < 0.2){
+                return "fold";
+            } else {
+                if (currentBet.currentBet > getMoney()){
+                    return "fold";
                 } else {
-                    if (heuristic > 400){
-                        decision = "raise " + (int) (Math.min(getMoney(), heuristic/15));
-                    } else {
-                        decision = "call";
-                    }
+                    return "call";
                 }
             }
         }
-        return decision;
     }
+
 }
