@@ -7,7 +7,15 @@ public class AustinBot3 extends Player{
     }
 
     public String decision(HashSet<Card> cardsInPlay, int pot, CurrentBet currentBet){
-        return "fold";
+        if (currentBet.currentBet == 0){
+            return "raise " + Math.min(getMoney(), 1);
+        }
+        if (currentBet.currentBet < getMoney()){
+            return "raise " + Math.min(getMoney(), 1);
+        } else {
+            return "fold";
+        }
     }
+
 
 }
