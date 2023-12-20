@@ -1,40 +1,48 @@
 import java.util.HashSet;
 
 public class AustinBot2 extends Player{
-    private Hand hand = new Hand();
+    private final Hand hand = new Hand();
     public AustinBot2(int money) {
         this.setMoney(money);
     }
 
     public String decision(HashSet<Card> cardsInPlay, int pot, CurrentBet currentBet){
-        int handRank = 0;
+        String decision = "fold";
         Hand handTotal = new Hand();
-        System.out.println(hand);
-        handTotal.addCards(hand.getCards());
+        int handRank = 0;
+        handTotal.addCards(getHand().getCards());
         handTotal.addCards(cardsInPlay);
         handRank = handTotal.handRank();
-        //Hand hand = cardsInPlay;
+        int strongHand = 6;
+        int moderateHand = 3;
+        double chanceToRaise = (handRank/10.0) + 0.1 ;
         if (currentBet.currentBet == 0){
-            if (handRank > 3){
-                return "raise " + 5;
+            if (handRank > moderateHand){
+                decision = "raise " + Math.min(getMoney(), (int) (handRank * 2));
             } else {
-                return "check";
+                decision = "check";
             }
         } else {
-            if (handRank > 5 && currentBet.currentBet < (double) (getMoney() * 0.2)) {
-                int betAmount = currentBet.currentBet + 20;
-                betAmount = Math.min(betAmount, getMoney()-1);
-                return "raise " + betAmount;
-            } else if (handRank < 5 && handRank > 2 && currentBet.currentBet < (double) (getMoney() * 0.2)) {
-                int betAmount = currentBet.currentBet + 10;
-                betAmount = Math.min(betAmount, getMoney()-1);
-                return "raise " + betAmount;
-            } else if (handRank == 2 && currentBet.currentBet < (double) (getMoney() * 0.15)) {
-                return "call";
+            if (handRank > strongHand){
+                if (Math.random() < chanceToRaise){
+                    decision = "raise " + Math.min(getMoney(), (int) ((handRank*50)/7));
+                } else {
+                    decision = "raise " + 1;
+                }
+            } else if (handRank > moderateHand) {
+                if (Math.random() < chanceToRaise - 0.05){
+                    decision = "raise " + Math.min(getMoney(), (int) ((handRank*50)/9));
+                } else {
+                    decision = "raise " + 1;
+                }
             } else {
-                return "fold";
+                if (Math.random() < chanceToRaise - 0.1){
+                    decision = "raise " + 1;
+                } else {
+                    decision = "fold";
+                }
             }
         }
+        return decision;
     }
-
 }
