@@ -1,16 +1,6 @@
 import java.util.*;
 public class Main {
     public static void main(String[] args) {
-
-        AustinBot1 austinBot1 = new AustinBot1(300);
-        HarryBot1 harryBot1 = new HarryBot1(300);
-        AustinBot1 austinBot2 = new AustinBot1(300);
-        HarryBot2 harryBot2 = new HarryBot2(300);
-        AustinBot1 austinBot3 = new AustinBot1(300);
-        HarryBot3 harryBot3 = new HarryBot3(300);
-        AustinBot1 austinBot4 = new AustinBot1(300);
-        HarryBot4 harryBot4 = new HarryBot4(300);
-
         numWins austinBot1Wins = new numWins(0);
         numWins harryBot1Wins = new numWins(0);
         numWins austinBot2Wins = new numWins(0);
@@ -19,24 +9,20 @@ public class Main {
         numWins harryBot3Wins = new numWins(0);
         numWins austinBot4Wins = new numWins(0);
         numWins harryBot4Wins = new numWins(0);
-        int[] winsArr = {austinBot1Wins.wins, harryBot1Wins.wins,
-                austinBot2Wins.wins, harryBot2Wins.wins,
-                austinBot3Wins.wins, harryBot3Wins.wins,
-                austinBot4Wins.wins, harryBot4Wins.wins};
 
-        for (int game = 1; game <= 39; game++) {
+        for (int game = 1; game <= 50000; game++) {
 
 
-            austinBot1 = new AustinBot1(300);
-            harryBot1 = new HarryBot1(300);
-            austinBot2 = new AustinBot1(300);
-            harryBot2 = new HarryBot2(300);
-            austinBot3 = new AustinBot1(300);
-            harryBot3 = new HarryBot3(300);
-            austinBot4 = new AustinBot1(300);
-            harryBot4 = new HarryBot4(300);
+            AustinBot1 austinBot1 = new AustinBot1(100);
+            HarryBot1 harryBot1 = new HarryBot1(100);
+            AustinBot2 austinBot2 = new AustinBot2(100);
+            HarryBot2 harryBot2 = new HarryBot2(100);
+            AustinBot3 austinBot3 = new AustinBot3(100);
+            HarryBot3 harryBot3 = new HarryBot3(100);
+            AustinBot4 austinBot4 = new AustinBot4(100);
+            HarryBot4 harryBot4 = new HarryBot4(100);
 
-            Player[] orderOfPlay = {austinBot1, harryBot1, austinBot2, harryBot2, austinBot3, harryBot3, austinBot4, harryBot4};
+            Player[] orderOfPlay = {austinBot1, harryBot1, austinBot2, harryBot4, austinBot3, harryBot3, austinBot4, harryBot2};
             HashSet<Card> cardsInPlay = new HashSet<>();
             Pot pot = new Pot(0);
             Deck deck = new Deck();
@@ -51,41 +37,43 @@ public class Main {
 
 
         System.out.println("AustinBot1 Wins: " + austinBot1Wins.wins);
-        if (beatMoreThanHalf(winsArr, austinBot1Wins.wins)){
-            austinBot1.variables();
-        }
         System.out.println("HarryBot1 Wins: " + harryBot1Wins.wins);
         System.out.println("AustinBot2 Wins: " + austinBot2Wins.wins);
-        if (beatMoreThanHalf(winsArr, austinBot2Wins.wins)){
-            austinBot2.variables();
-        }
         System.out.println("HarryBot2 Wins: " + harryBot2Wins.wins);
         System.out.println("AustinBot3 Wins: " + austinBot3Wins.wins);
-        if (beatMoreThanHalf(winsArr, austinBot3Wins.wins)){
-            austinBot3.variables();
-        }
         System.out.println("HarryBot3 Wins: " + harryBot3Wins.wins);
         System.out.println("AustinBot4 Wins: " + austinBot4Wins.wins);
-        if (beatMoreThanHalf(winsArr, austinBot4Wins.wins)){
-            austinBot4.variables();
-        }
         System.out.println("HarryBot4 Wins: " + harryBot4Wins.wins);
     }
 
-    private static void checkGameWinner(Player[] orderOfPlay, int game, Player austinBot1, Player harryBot1,
-                                        Player austinBot2, Player harryBot2, Player austinBot3, Player harryBot3,
-                                        Player austinBot4, Player harryBot4, numWins austinBot1Wins, numWins harryBot1Wins,
-                                        numWins austinBot2Wins, numWins harryBot2Wins, numWins austinBot3Wins, numWins harryBot3Wins,
+    private static void checkGameWinner(Player[] orderOfPlay, int game,
+                                        Player austinBot1, Player harryBot1,
+                                        Player austinBot2, Player harryBot2,
+                                        Player austinBot3, Player harryBot3,
+                                        Player austinBot4, Player harryBot4,
+                                        numWins austinBot1Wins, numWins harryBot1Wins,
+                                        numWins austinBot2Wins, numWins harryBot2Wins,
+                                        numWins austinBot3Wins, numWins harryBot3Wins,
                                         numWins austinBot4Wins, numWins harryBot4Wins) {
         Player winner = null;
-        int maxMoney = 0;
 
-        // Find the player with the most money
-        for (int i = 0; i < orderOfPlay.length; i++) {
+        // Find the last player who hasn't folded
+        for (int i = orderOfPlay.length - 1; i >= 0; i--) {
             Player currentPlayer = orderOfPlay[i];
-            if (currentPlayer != null && currentPlayer.getMoney() > maxMoney) {
+            if (currentPlayer != null && !currentPlayer.hasFolded()) {
                 winner = currentPlayer;
-                maxMoney = currentPlayer.getMoney();
+                break;
+            }
+        }
+
+        // If all players have folded, set the winner to the last player who folded
+        if (winner == null) {
+            for (int i = orderOfPlay.length - 1; i >= 0; i--) {
+                Player currentPlayer = orderOfPlay[i];
+                if (currentPlayer != null) {
+                    winner = currentPlayer;
+                    break;
+                }
             }
         }
 
@@ -93,36 +81,25 @@ public class Main {
         if (winner != null) {
             String winnerString = winner.toString();
 
-            if (winnerString.contains("AustinBot1")) {
+            if (winnerString.contains(austinBot1.toString())) {
                 austinBot1Wins.wins++;
-            } else if (winnerString.contains("HarryBot1")) {
+            } else if (winnerString.contains(harryBot1.toString())) {
                 harryBot1Wins.wins++;
-            } else if (winnerString.contains("AustinBot2")) {
+            } else if (winnerString.contains(austinBot2.toString())) {
                 austinBot2Wins.wins++;
-            } else if (winnerString.contains("HarryBot2")) {
+            } else if (winnerString.contains(harryBot2.toString())) {
                 harryBot2Wins.wins++;
-            } else if (winnerString.contains("AustinBot3")) {
+            } else if (winnerString.contains(austinBot3.toString())) {
                 austinBot3Wins.wins++;
-            } else if (winnerString.contains("HarryBot3")) {
+            } else if (winnerString.contains(harryBot3.toString())) {
                 harryBot3Wins.wins++;
-            } else if (winnerString.contains("AustinBot4")) {
+            } else if (winnerString.contains(austinBot4.toString())) {
                 austinBot4Wins.wins++;
-            } else if (winnerString.contains("HarryBot4")) {
+            } else if (winnerString.contains(harryBot4.toString())) {
                 harryBot4Wins.wins++;
             }
-
-            //System.out.println("Game " + game + " Winner: " + winnerString);
         }
     }
 
-    public static boolean beatMoreThanHalf(int[] wins, int check){
-        int numGreater = 0;
-        for (int i : wins){
-            if (check > i){
-                numGreater++;
-            }
-        }
-        return numGreater > 4;
-    }
 
 }
