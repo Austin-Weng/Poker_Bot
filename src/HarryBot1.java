@@ -5,6 +5,8 @@ public class HarryBot1 extends Player {
     public HarryBot1(int money) {
         this.setMoney(money);
     }
+
+    @Override
     public String toString() {
         return "HarryBot1";
     }
@@ -12,11 +14,35 @@ public class HarryBot1 extends Player {
     @Override
     public String decision(HashSet<Card> cardsInPlay, int pot, CurrentBet currentBet) {
         Random random = new Random();
-        if (random.nextDouble() < 0.2) {
-            int maxRaise = Math.min(300, getMoney()); // Limit raise to 300 or available money
+
+        int handRank = evaluateHand(cardsInPlay);
+        double potOdds = calculatePotOdds(pot, currentBet.currentBet);
+
+        // Bluffing with draws strategy
+        if (handRank >= 6 && random.nextDouble() < 0.5) {
+            int maxRaise = Math.min(100, getMoney());
             return "raise " + (currentBet.currentBet + random.nextInt(maxRaise));
         } else {
-            return (random.nextDouble() < 0.1) ? "fold" : "call";
+            // Bluff with draws (straight draws, flush draws, or overcards)
+            boolean bluffWithDraw = random.nextDouble() < 0.3; // Adjust the bluff frequency as needed
+
+            if (bluffWithDraw) {
+                int maxRaise = Math.min(50, getMoney());
+                return "raise " + (currentBet.currentBet + random.nextInt(maxRaise));
+            } else {
+                return (random.nextDouble() < potOdds) ? "call" : "fold";
+            }
         }
+    }
+
+    private int evaluateHand(HashSet<Card> cardsInPlay) {
+        // Simple hand evaluation: just count the number of cards in the hand
+        return cardsInPlay.size();
+    }
+
+    private double calculatePotOdds(int pot, int currentBet) {
+        // Calculate pot odds to determine the attractiveness of the current bet
+        int totalPot = pot + currentBet;
+        return (double) currentBet / totalPot * 100;
     }
 }
