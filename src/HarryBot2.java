@@ -21,7 +21,7 @@ public class HarryBot2 extends Player {
 
         // Implement push-fold strategy when the stack is low
         if (shouldUsePushFoldStrategy()) {
-            return "raise" + maxRaise;
+            return "all-in";
         }
 
         // Check if it's possible to call, otherwise, fold
