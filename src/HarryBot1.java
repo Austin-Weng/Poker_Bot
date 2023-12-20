@@ -30,7 +30,8 @@ public class HarryBot1 extends Player {
                 int maxRaise = Math.min(50, getMoney());
                 return "raise " + (currentBet.currentBet + random.nextInt(maxRaise));
             } else {
-                return (random.nextDouble() < potOdds) ? "call" : "fold";
+                // Check if it's possible to call, otherwise, fold
+                return (currentBet.currentBet <= getMoney() && random.nextDouble() < potOdds) ? "call" : "fold";
             }
         }
     }
